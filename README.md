@@ -39,6 +39,6 @@ _Vodafone_ users always generate a voucher code to be able to process their mobi
 $response = $momo->pay($amount, $phone, $network, $voucherCode);
 ```
 
-## license
+## License
 
 [MIT](LICENSE)
