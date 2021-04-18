@@ -11,7 +11,7 @@ class UnitTest extends TestCase
     {
         $momo = new MobileMoney();
 
-        $payment = $momo->pay(0.2, '233545466796', 'MTN');
+        $payment = $momo->pay(0.2, '233545466795', 'MTN');
 
         if (!$payment->isBeingProcessed()) {
             echo $payment->getError();
