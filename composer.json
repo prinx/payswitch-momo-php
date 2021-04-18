@@ -1,5 +1,5 @@
 {
-    "name": "prinx/payswitch-momo-service",
+    "name": "prinx/payswitch-momo",
     "description": "Payswitch mobile money api utility class",
     "type": "library",
     "license": "MIT",
