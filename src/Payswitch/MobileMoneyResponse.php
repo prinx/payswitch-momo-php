@@ -11,6 +11,7 @@ class MobileMoneyResponse implements MobileMoneyResponseInterface
     protected $error = null;
     protected $data = null;
     protected $isBeingProcessed = false;
+    protected $status = 0;
 
     public function __construct($response, $error, $data)
     {
@@ -39,6 +40,7 @@ class MobileMoneyResponse implements MobileMoneyResponseInterface
             switch ((string) $responseData['code']) {
                 case '000':
                     $this->isBeingProcessed = true;
+                    $this->status = 200;
                     break;
                 case '101':
                     $this->error = "You don't have enough balance to process this request.";
@@ -115,6 +117,11 @@ class MobileMoneyResponse implements MobileMoneyResponseInterface
     public function getResponse()
     {
         return $this->response;
+    }
+
+    public function getStatus()
+    {
+        return $this->status;
     }
 
     public function getRawResponse()

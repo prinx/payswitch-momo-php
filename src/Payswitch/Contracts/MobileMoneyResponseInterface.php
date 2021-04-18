@@ -15,6 +15,7 @@ interface MobileMoneyResponseInterface
     public function getError();
 
     public function getResponse();
+    public function getStatus();
 
     public function getRawResponse();
 }
