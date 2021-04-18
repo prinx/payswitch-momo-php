@@ -107,14 +107,9 @@ class MobileMoneyResponse implements MobileMoneyResponseInterface
         return $this->data['transaction_id'];
     }
 
-    public function tel()
+    public function getPhone()
     {
         return $this->data['subscriber_number'];
-    }
-
-    public function msisdn()
-    {
-        return $this->tel();
     }
 
     public function getError()
