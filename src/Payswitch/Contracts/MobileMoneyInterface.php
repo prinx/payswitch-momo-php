@@ -19,9 +19,9 @@ interface MobileMoneyInterface
      * @param string|int|null  $voucher_code
      * @param array            $options      Curl options to pass to the request
      *
-     * @return \StdClass|array Response
+     * @return MobileMoneyResponseInterface
      */
-    public static function pay(
+    public function pay(
         $msisdn,
         $network,
         $amount,

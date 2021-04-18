@@ -62,7 +62,7 @@ class MobileMoney implements MobileMoneyInterface
      *
      * @return MobileMoneyResponseInterface
      */
-    public static function pay(
+    public function pay(
         $amount,
         $msisdn,
         $network,
@@ -71,11 +71,11 @@ class MobileMoney implements MobileMoneyInterface
     ): MobileMoneyResponseInterface {
         if (isset(self::$networks[$network])) {
             $network = self::$networks[$network];
-            $data = self::prepareData($msisdn, $network, $amount, $voucherCode);
+            $data = $this->prepareData($msisdn, $network, $amount, $voucherCode);
             $defaultOptions = array_merge($options, ['params' => $data]);
 
             $ch = curl_init();
-            curl_setopt_array($ch, self::curlOptions($defaultOptions));
+            curl_setopt_array($ch, $this->curlOptions($defaultOptions));
             $response = curl_exec($ch);
             $err = curl_error($ch);
 
@@ -98,16 +98,16 @@ class MobileMoney implements MobileMoneyInterface
      *
      * @return array
      */
-    private static function prepareData($msisdn, $network, $amount, $voucherCode)
+    private function prepareData($msisdn, $network, $amount, $voucherCode)
     {
         $data = [
             'r-switch' => $network,
             'subscriber_number' => trim($msisdn, '+'),
-            'transaction_id' => self::transactionId(),
-            'amount' => self::convertAmount($amount),
-            'processing_code' => self::credentials('processing_code'),
-            'merchant_id' => self::credentials('merchant_id'),
-            'desc' => self::credentials('desc'),
+            'transaction_id' => $this->transactionId(),
+            'amount' => $this->convertAmount($amount),
+            'processing_code' => $this->credentials('processing_code'),
+            'merchant_id' => $this->credentials('merchant_id'),
+            'desc' => $this->credentials('desc'),
         ];
 
         if ($network === self::VODAFONE_ABBR) {
@@ -124,10 +124,10 @@ class MobileMoney implements MobileMoneyInterface
      *
      * @return array
      */
-    private static function curlOptions($defaultOptions)
+    private function curlOptions($defaultOptions)
     {
         return [
-            CURLOPT_URL => self::credentials('endpoint'),
+            CURLOPT_URL => $this->credentials('endpoint'),
             CURLOPT_RETURNTRANSFER => $defaultOptions['return-transfer'] ?? true,
             CURLOPT_ENCODING => $defaultOptions['encoding'] ?? 'UTF-8',
             CURLOPT_MAXREDIRS => $defaultOptions['maxredirs'] ?? 10,
@@ -136,7 +136,7 @@ class MobileMoney implements MobileMoneyInterface
             CURLOPT_HTTP_VERSION => $defaultOptions['version'] ?? CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => $defaultOptions['method'] ?? 'POST',
             CURLOPT_POSTFIELDS => json_encode($defaultOptions['params'] ?? []),
-            CURLOPT_HTTPHEADER => self::headers(),
+            CURLOPT_HTTPHEADER => $this->headers(),
         ];
     }
 
@@ -145,12 +145,12 @@ class MobileMoney implements MobileMoneyInterface
      *
      * @return array
      */
-    private static function headers()
+    private function headers()
     {
         return [
             'Cache-Control: no-cache',
             'Content-Type: application/json',
-            'Authorization: Basic '.base64_encode(self::credentials('token')),
+            'Authorization: Basic '.base64_encode($this->credentials('token')),
         ];
     }
 
@@ -161,7 +161,7 @@ class MobileMoney implements MobileMoneyInterface
      *
      * @return string
      */
-    public static function convertAmount($amount)
+    public function convertAmount($amount)
     {
         $amount = (float) $amount;
 
@@ -173,7 +173,7 @@ class MobileMoney implements MobileMoneyInterface
      *
      * @return string
      */
-    public static function transactionId()
+    public function transactionId()
     {
         return str_pad(rand(1, 999999999), 12, '0', STR_PAD_LEFT);
     }
@@ -185,7 +185,7 @@ class MobileMoney implements MobileMoneyInterface
      *
      * @return string|array
      */
-    public static function credentials($name = '')
+    public function credentials($name = '')
     {
         $data = [
             'endpoint' => env('PAYSWITCH_MOMO_API_ENDPOINT'),
