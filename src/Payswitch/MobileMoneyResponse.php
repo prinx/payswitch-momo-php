@@ -10,6 +10,7 @@ class MobileMoneyResponse implements MobileMoneyResponseInterface
     protected $response = null;
     protected $error = null;
     protected $data = null;
+    protected $isSuccessful = false;
     protected $isBeingProcessed = false;
     protected $status = 0;
 
@@ -25,6 +26,8 @@ class MobileMoneyResponse implements MobileMoneyResponseInterface
             return;
         }
 
+        $this->isBeingProcessed = true;
+
         $responseData = $response ? json_decode($response, true) : [];
         $isValidJson = json_last_error() === JSON_ERROR_NONE;
 
@@ -39,7 +42,7 @@ class MobileMoneyResponse implements MobileMoneyResponseInterface
         if (isset($responseData['code'])) {
             switch ((string) $responseData['code']) {
                 case '000':
-                    $this->isBeingProcessed = true;
+                    $this->isSuccessful = true;
                     $this->status = 200;
                     break;
                 case '101':
@@ -87,6 +90,11 @@ class MobileMoneyResponse implements MobileMoneyResponseInterface
         } else {
             $this->error = 'Kindly check the getRawData for the error.';
         }
+    }
+
+    public function isSuccessful(): bool
+    {
+        return $this->isSuccessful;
     }
 
     public function isBeingProcessed(): bool

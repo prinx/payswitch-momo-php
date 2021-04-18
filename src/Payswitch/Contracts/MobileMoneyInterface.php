@@ -10,22 +10,21 @@ interface MobileMoneyInterface
      * The amount should be in cedi. For example 2 GHS will be passed like "2";
      * 10 pesewas will be passed like "0.1", etc.
      *
-     * The voucher code is only for some vodafone users. Pass null for other
-     * networks. (Note that this can change in the future.)
+     * The voucher code is only for vodafone users.
      *
-     * @param string           $msisdn       The number of the user
-     * @param string           $network      The mnc of the network
-     * @param string|int|float $amount       The amount the user is paying
-     * @param string|int|null  $voucher_code
-     * @param array            $options      Curl options to pass to the request
+     * @param string|int|float $amount      The amount the user is paying (in cedi)
+     * @param string           $msisdn      The number of the user
+     * @param string           $network     (MTN|VODAFONE|AIRTEL-TIGO|TIGO-AIRTEL|AIRTELTIGO|TIGOAIRTEL|AIRTEL|TIGO)
+     * @param string|int|null  $voucherCode
+     * @param array            $curlOptions Additional Curl options to pass to the request
      *
      * @return MobileMoneyResponseInterface
      */
     public function pay(
+        $amount,
         $msisdn,
         $network,
-        $amount,
-        $voucher_code = null,
-        $options = []
+        $voucherCode = null,
+        $curlOptions = []
     ): MobileMoneyResponseInterface;
 }

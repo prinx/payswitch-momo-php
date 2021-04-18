@@ -4,6 +4,8 @@ namespace Prinx\Payswitch\Contracts;
 
 interface MobileMoneyResponseInterface
 {
+    public function isSuccessful(): bool;
+
     public function isBeingProcessed(): bool;
 
     public function getTransactionId();

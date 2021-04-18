@@ -51,14 +51,13 @@ class MobileMoney implements MobileMoneyInterface
      * The amount should be in cedi. For example 2 GHS will be passed like "2";
      * 10 pesewas will be passed like "0.1", etc.
      *
-     * The voucher code is only for some vodafone users. Pass null for other
-     * networks. (Note that this can change in the future.)
+     * The voucher code is only for vodafone users.
      *
      * @param string|int|float $amount      The amount the user is paying (in cedi)
      * @param string           $msisdn      The number of the user
-     * @param string           $network     (MTN|VODAFONE|AIRTEL|TIGO)
+     * @param string           $network     (MTN|VODAFONE|AIRTEL-TIGO|TIGO-AIRTEL|AIRTELTIGO|TIGOAIRTEL|AIRTEL|TIGO)
      * @param string|int|null  $voucherCode
-     * @param array            $options     Curl options to pass to the request
+     * @param array            $curlOptions Additional Curl options to pass to the request
      *
      * @return MobileMoneyResponseInterface
      */
@@ -67,12 +66,12 @@ class MobileMoney implements MobileMoneyInterface
         $msisdn,
         $network,
         $voucherCode = null,
-        $options = []
+        $curlOptions = []
     ): MobileMoneyResponseInterface {
         if (isset(self::$networks[$network])) {
             $network = self::$networks[$network];
             $data = $this->prepareData($msisdn, $network, $amount, $voucherCode);
-            $defaultOptions = array_merge($options, ['params' => $data]);
+            $defaultOptions = array_merge($curlOptions, ['params' => $data]);
 
             $ch = curl_init();
             curl_setopt_array($ch, $this->curlOptions($defaultOptions));
