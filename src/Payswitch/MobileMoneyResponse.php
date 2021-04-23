@@ -113,9 +113,26 @@ class MobileMoneyResponse implements MobileMoneyResponseInterface
         return $this->error;
     }
 
-    public function getResponse()
+    public function getResponse($attribute = null, $default = null)
     {
+        if ($attribute) {
+            return $this->response[$attribute] ?? $default;
+        }
+
         return $this->response;
+    }
+
+    /**
+     * Get an attribute of the response or default value if attribute not found.
+     *
+     * @param string $attribute
+     * @param mixed  $default
+     *
+     * @return mixed
+     */
+    public function get($attribute = null, $default = null)
+    {
+        return $this->getResponse($attribute, $default);
     }
 
     public function getStatus()
