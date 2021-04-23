@@ -14,6 +14,7 @@ composer require prinx/payswitch-momo
 
 ```ini
 # .env file
+
 PAYSWITCH_MOMO_API_ENV=test|prod
 PAYSWITCH_MOMO_API_USER=
 PAYSWITCH_MOMO_API_KEY=
