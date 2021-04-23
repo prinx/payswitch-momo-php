@@ -150,7 +150,6 @@ class MobileMoneyResponseCheckCallbackHandlerTest extends TestCase
         $callbackHandler->expects($this->exactly($expectedCalls))
             ->method('runClosure');
 
-            $testCase = $this;
         if ($isCustomCondition) {
             $callbackHandler->{$condition}(function () {});
         } else {
