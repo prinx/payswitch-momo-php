@@ -3,9 +3,12 @@
 namespace Prinx\Payswitch;
 
 use Prinx\Payswitch\Contracts\MobileMoneyResponseInterface;
+use Prinx\Payswitch\Traits\GetResponseAttributes;
 
 class MobileMoneyResponse implements MobileMoneyResponseInterface
 {
+    use GetResponseAttributes;
+
     protected $rawResponse = null;
     protected $response = null;
     protected $error = null;
@@ -113,6 +116,14 @@ class MobileMoneyResponse implements MobileMoneyResponseInterface
         return $this->error;
     }
 
+    /**
+     * Get an attribute of the response or default value if attribute not found. Get full response if no attribute passed.
+     *
+     * @param string $attribute
+     * @param mixed  $default
+     *
+     * @return mixed
+     */
     public function getResponse($attribute = null, $default = null)
     {
         if ($attribute) {

@@ -253,19 +253,15 @@ class MobileMoneyResponseCheckCallbackHandler
         return $this;
     }
 
-    public function runClosure($closure, $args, $bindTo = null)
+    public function runClosure($closure, $args)
     {
-        if ($bindTo) {
-            $callback = $closure->bindTo($bindTo);
-        }
-
-        return call_user_func_array($callback, $args);
+        return call_user_func_array($closure, $args);
     }
 
     public function runCallback($callback, $response)
     {
         if ($callback instanceof Closure) {
-            $this->runClosure($callback, [$response], $this);
+            $this->runClosure($callback, [$response]);
 
             return $this;
         }
@@ -273,7 +269,7 @@ class MobileMoneyResponseCheckCallbackHandler
         if (is_array($callback)) {
             foreach ($callback as $actualCallback) {
                 if ($actualCallback instanceof Closure) {
-                    $this->runClosure($actualCallback, [$response], $this);
+                    $this->runClosure($actualCallback, [$response]);
                 }
             }
 
@@ -330,6 +326,11 @@ class MobileMoneyResponseCheckCallbackHandler
     public function getCurrentResponse($attribute = null, $default = null)
     {
         return $attribute ? $this->currentResponse[$attribute] ?? $default : $this->currentResponse;
+    }
+
+    public function get($attribute = null, $default = null)
+    {
+        return $this->getCurrentResponse($attribute, $default);
     }
 
     public function getResponses()
