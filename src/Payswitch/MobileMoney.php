@@ -81,11 +81,9 @@ class MobileMoney implements MobileMoneyInterface
             curl_close($ch);
         } else {
             $err = 'Unsupported network "'.$network.'"';
-            $data = [];
-            $response = null;
         }
 
-        return new MobileMoneyResponse($response, $err, $data);
+        return new MobileMoneyResponse($response ?? null, $err, $data['transaction_id'] ?? null);
     }
 
     /**
@@ -144,7 +142,7 @@ class MobileMoney implements MobileMoneyInterface
      *
      * @return array
      */
-    private function headers()
+    public function headers()
     {
         return [
             'Cache-Control: no-cache',
@@ -187,8 +185,8 @@ class MobileMoney implements MobileMoneyInterface
     public function credentials($name = '')
     {
         $data = [
-            'endpoint' => env('PAYSWITCH_MOMO_API_ENDPOINT'),
-            'token' => env('PAYSWITCH_MOMO_API_TOKEN'),
+            'endpoint' => 'https://'.env('PAYSWITCH_MOMO_API_ENV').'.theteller.net/v1.1/transaction/process',
+            'token' => env('PAYSWITCH_MOMO_API_USER').':'.env('PAYSWITCH_MOMO_API_KEY'),
             'processing_code' => env('PAYSWITCH_MOMO_API_PROCESSING_CODE'),
             'desc' => env('PAYSWITCH_MOMO_API_DESCRIPTION'),
             'merchant_id' => env('PAYSWITCH_MOMO_API_MERCHANT_ID'),

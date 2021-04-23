@@ -1,0 +1,9 @@
+@transaction_id=
+@merchant_id={{$dotenv PAYSWITCH_MOMO_API_MERCHANT_ID}}
+
+###
+
+GET https://prod.theteller.net/v1.1/users/transactions/{{transaction_id}}/status HTTP/1.1
+Cache-Control: no-cache
+Content-Type: application/json
+Merchant-Id: {{merchant_id}}

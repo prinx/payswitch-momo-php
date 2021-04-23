@@ -4,14 +4,15 @@ namespace Tests\Unit;
 
 use Prinx\Payswitch\MobileMoney;
 use Tests\TestCase;
+use function Prinx\Dotenv\env;
 
-class UnitTest extends TestCase
+class MobileMoneyTest extends TestCase
 {
-    public function testExample()
+    public function testRequestSuccessfulySent()
     {
         $momo = new MobileMoney();
 
-        $payment = $momo->pay(0.2, '233545466795', 'MTN');
+        $payment = $momo->pay(0.2, env('TEST_PHONE'), env('TEST_PHONE_NETWORK'));
 
         if (!$payment->isBeingProcessed()) {
             echo $payment->getError();

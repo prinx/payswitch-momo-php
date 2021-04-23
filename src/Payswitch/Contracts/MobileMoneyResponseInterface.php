@@ -10,8 +10,6 @@ interface MobileMoneyResponseInterface
 
     public function getTransactionId();
 
-    public function getPhone();
-
     public function getError();
 
     public function getResponse();

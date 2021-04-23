@@ -9,16 +9,16 @@ class MobileMoneyResponse implements MobileMoneyResponseInterface
     protected $rawResponse = null;
     protected $response = null;
     protected $error = null;
-    protected $data = null;
+    protected $transactionId = null;
     protected $isSuccessful = false;
     protected $isBeingProcessed = false;
     protected $status = 0;
 
-    public function __construct($response, $error, $data)
+    public function __construct($response, $error, $transactionId)
     {
         $this->rawResponse = $response;
         $this->response = $response;
-        $this->data = $data;
+        $this->transactionId = $transactionId;
 
         if ($error) {
             $this->error = $error;
@@ -48,9 +48,6 @@ class MobileMoneyResponse implements MobileMoneyResponseInterface
                 case '101':
                     $this->error = "You don't have enough balance to process this request.";
                     break;
-                case '105':
-                    $this->error = "You don't have enough balance to process this request.";
-                    break;
                 case '102':
                     $this->error = 'This number is not registered for mobile money.';
                     break;
@@ -60,9 +57,13 @@ class MobileMoneyResponse implements MobileMoneyResponseInterface
                 case '104':
                     $this->error = 'Transaction declined.';
                     break;
+                case '105':
+                    $this->error = "You don't have enough balance to process this request.";
+                    break;
                 case '114':
                     $this->error = 'Invalid Voucher code';
                     break;
+                case '600': // Fall through to default
                 default:
                     $this->error = $responseData['reason'] ?? 'An error happened when processing your request.';
                     break;
@@ -104,12 +105,7 @@ class MobileMoneyResponse implements MobileMoneyResponseInterface
 
     public function getTransactionId()
     {
-        return $this->data['transaction_id'];
-    }
-
-    public function getPhone()
-    {
-        return $this->data['subscriber_number'];
+        return $this->transactionId;
     }
 
     public function getError()
