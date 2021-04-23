@@ -317,7 +317,7 @@ class MobileMoneyResponseCheckCallbackHandler
         }
 
         foreach ($this->customCurrentResponseNames as $original => $custom) {
-            $this->currentResponse[$custom] = $this->originalCurrentResponse[$original];
+            $this->currentResponse[$custom] = $this->originalCurrentResponse[$original] ?? null;
         }
 
         return $this->currentResponse;
