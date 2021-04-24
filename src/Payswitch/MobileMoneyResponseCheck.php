@@ -28,6 +28,10 @@ class MobileMoneyResponseCheck
             throw new Exception('Transaction ids passed to the check method must be an array or a string. Got '.gettype($ids));
         }
 
+        if (is_string($ids)) {
+            $ids = [$ids];
+        }
+
         $handles = [];
         $multiHandle = curl_multi_init();
         $curlOptions = [
