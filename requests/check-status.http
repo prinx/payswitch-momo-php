@@ -1,4 +1,4 @@
-@transaction_id=
+@transaction_id=000630028731
 @merchant_id={{$dotenv PAYSWITCH_MOMO_API_MERCHANT_ID}}
 
 ###

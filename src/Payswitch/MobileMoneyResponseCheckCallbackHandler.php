@@ -11,6 +11,7 @@ class MobileMoneyResponseCheckCallbackHandler
 {
     protected $customConditions = [
         'success',
+        'pending',
         'failure',
         'always',
         'curlError',
