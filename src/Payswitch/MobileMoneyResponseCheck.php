@@ -48,8 +48,7 @@ class MobileMoneyResponseCheck
                 continue;
             }
 
-            $url = str_replace('[env]', env('PAYSWITCH_MOMO_API_ENV', 'prod'), self::MOMO_RESPONSE_CHECK_ENDPOINT);
-            $url = str_replace('[transction_id]', $transactionId, $url);
+            $url = $this->formatUrl($transactionId);
 
             $handles[$transactionId] = curl_init($url);
             curl_setopt_array($handles[$transactionId], $curlOptions);
@@ -101,5 +100,13 @@ class MobileMoneyResponseCheck
         curl_multi_close($multiHandle);
 
         return new MobileMoneyResponseCheckCallbackHandler($responses);
+    }
+
+    public function formatUrl($transactionId)
+    {
+        $url = str_replace('[env]', env('PAYSWITCH_MOMO_API_ENV', 'prod'), self::MOMO_RESPONSE_CHECK_ENDPOINT);
+        $url = str_replace('[transaction_id]', $transactionId, $url);
+
+        return $url;
     }
 }
