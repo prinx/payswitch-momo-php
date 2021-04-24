@@ -310,6 +310,16 @@ class MobileMoneyResponseCheckCallbackHandler
     }
 
     /**
+     * Pending codes.
+     *
+     * @return array
+     */
+    public function getPendingValues()
+    {
+        return $this->pendingValues;
+    }
+
+    /**
      * Failure codes.
      *
      * @return array
