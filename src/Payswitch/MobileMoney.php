@@ -107,7 +107,7 @@ class MobileMoney implements MobileMoneyInterface
             'desc' => $this->credentials('desc'),
         ];
 
-        if ($network === self::VODAFONE_ABBR) {
+        if ($network === self::VODAFONE_ABBR && $voucherCode) {
             $data['voucher_code'] = $voucherCode;
         }
 
