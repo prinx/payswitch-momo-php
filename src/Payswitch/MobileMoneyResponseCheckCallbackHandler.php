@@ -222,7 +222,7 @@ class MobileMoneyResponseCheckCallbackHandler
 
     public function isFailure()
     {
-        return !$this->isSuccess();
+        return !$this->isSuccess() && !$this->isPending();
     }
 
     /**
