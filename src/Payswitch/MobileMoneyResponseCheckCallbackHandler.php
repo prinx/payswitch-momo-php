@@ -54,6 +54,8 @@ class MobileMoneyResponseCheckCallbackHandler
 
     protected $conditionToCheckForSuccess = 'code';
 
+    protected $conditionToCheckForPending = 'code';
+
     /**
      * Codes of the request payload that determines that the transaction was successful.
      *
@@ -62,18 +64,18 @@ class MobileMoneyResponseCheckCallbackHandler
     protected $successValues = ['000'];
 
     /**
+     * Codes of the request payload that determines that the transaction is pending.
+     *
+     * @var array
+     */
+    protected $pendingValues = ['111'];
+
+    /**
      * Codes of the request payload that determines that the transaction failed.
      *
      * @var array
      */
     protected $failureValues = ['101', '102', '103', '104', '105', '114', '600', 'default'];
-
-    /**
-     * If the transaction was successful.
-     *
-     * @var bool
-     */
-    protected $isSuccessful;
 
     protected $responses = [];
 
@@ -174,14 +176,32 @@ class MobileMoneyResponseCheckCallbackHandler
 
     public function isSuccess()
     {
-        if (is_null($this->isSuccessful)) {
-            $this->isSuccessful = in_array(
-                $this->getCurrentResponse($this->conditionToCheckForSuccess),
-                $this->successValues
-            );
-        }
+        return in_array(
+            $this->getCurrentResponse($this->conditionToCheckForSuccess),
+            $this->successValues
+        );
+    }
 
-        return $this->isSuccessful;
+    /**
+     * Run callback if the transaction is pending.
+     *
+     * @param Closure|string $callback
+     *
+     * @return $this
+     */
+    public function onPending($callback)
+    {
+        $this->on('pending', $callback);
+
+        return $this;
+    }
+
+    public function isPending()
+    {
+        return in_array(
+            $this->getCurrentResponse($this->conditionToCheckForPending),
+            $this->pendingValues
+        );
     }
 
     /**
@@ -366,6 +386,7 @@ class MobileMoneyResponseCheckCallbackHandler
     {
         $messages = [
             '000' => 'Transaction successful. Your transaction ID is '.$transactionId,
+            '111' => 'Payment request sent successfully. Awaiting response.',
             '101' => "You don't have enough balance to process this request.",
             '102' => 'This number is not registered for mobile money.',
             '103' => 'Wrong PIN or transaction timed out.',
