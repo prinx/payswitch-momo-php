@@ -25,7 +25,7 @@ class MobileMoneyResponseCheck
     public function check($ids)
     {
         if (!$ids || (!is_array($ids) && !is_string($ids))) {
-            throw new Exception('$ids parameter must be an array or a string.');
+            throw new Exception('Transaction ids passed to the check method must be an array or a string. Got '.gettype($ids));
         }
 
         $handles = [];
