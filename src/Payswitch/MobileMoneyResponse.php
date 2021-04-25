@@ -64,7 +64,10 @@ class MobileMoneyResponse implements MobileMoneyResponseInterface
                     $this->error = "You don't have enough balance to process this request.";
                     break;
                 case '114':
-                    $this->error = 'Invalid Voucher code';
+                    $this->error = 'Invalid Voucher code.';
+                    break;
+                case '999':
+                    $this->error = 'Transaction not found.'; // Probably the developer did not perform the transaction or used a payswitch account different from the one they are using to check the status.
                     break;
                 case '600': // Fall through to default
                 default:

@@ -76,7 +76,7 @@ class MobileMoneyResponseCheckCallbackHandler
      *
      * @var array
      */
-    protected $failureValues = ['101', '102', '103', '104', '105', '114', '600', 'default'];
+    protected $failureValues = ['101', '102', '103', '104', '105', '114', '600', '999', 'default'];
 
     protected $responses = [];
 
@@ -403,7 +403,8 @@ class MobileMoneyResponseCheckCallbackHandler
             '103' => 'Wrong PIN or transaction timed out.',
             '104' => 'Transaction declined.',
             '105' => "You don't have enough balance to process this request.",
-            '114' => 'Invalid Voucher code',
+            '114' => 'Invalid Voucher code.',
+            '999' => 'Transaction not found.',
             // '600' => $this->getCurrentResponse('details', 'An error happened when processing your request.'),  // Use 'default' for error code 600
             'default' => $this->getCurrentResponse('details', 'An error happened when processing your request'),
         ];
