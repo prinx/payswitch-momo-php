@@ -63,17 +63,9 @@ class MobileMoneyResponseCheck
         $stillRunning = null;
 
         do {
-            $mrc = curl_multi_exec($multiHandle, $stillRunning);
-        } while ($mrc == CURLM_CALL_MULTI_PERFORM);
-
-        while ($stillRunning && $mrc == CURLM_OK) {
-            // Wait for activity on any curl connection
-            if (curl_multi_select($multiHandle) === -1) {
-                usleep(100);
-            }
-
-            while (curl_multi_exec($multiHandle, $stillRunning) == CURLM_CALL_MULTI_PERFORM);
-        }
+            curl_multi_exec($multiHandle, $stillRunning);
+            curl_multi_select($multiHandle);
+        } while ($stillRunning);
 
         $errno = curl_multi_errno($multiHandle);
         $error = $errno === CURLM_OK ? null : curl_multi_strerror($errno);
