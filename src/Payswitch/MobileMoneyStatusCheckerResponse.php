@@ -85,6 +85,8 @@ class MobileMoneyStatusCheckerResponse
      */
     protected $callbacks = [];
 
+    protected $appended = [];
+
     public function __construct($responses)
     {
         $this->responses = $responses;
