@@ -9,7 +9,7 @@ class MobileMoneyStatusChecker
     const MOMO_RESPONSE_CHECK_ENDPOINT = 'https://[env].theteller.net/v1.1/users/transactions/[transaction_id]/status';
 
     /**
-     * @var MobileMoneyResponseCheckCallbackHandler
+     * @var \Prinx\Payswitch\MobileMoneyStatusCheckerResponse
      */
     protected $callbackHandler = null;
 
@@ -20,7 +20,7 @@ class MobileMoneyStatusChecker
      *
      * @param string|array $ids
      *
-     * @return MobileMoneyResponseCheckCallbackHandler
+     * @return \Prinx\Payswitch\MobileMoneyStatusCheckerResponse
      */
     public function check($ids)
     {
