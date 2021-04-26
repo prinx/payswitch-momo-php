@@ -165,4 +165,11 @@ class MobileMoneyStatus implements MobileMoneyStatusInterface
     {
         return $this->appended;
     }
+
+    public function setAppended($toAppend)
+    {
+        $this->appended = $toAppend;
+
+        return $this;
+    }
 }

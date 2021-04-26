@@ -25,7 +25,7 @@ class MobileMoneyStatusCheckerResponse
     protected $logFolder;
 
     /**
-     * @var array
+     * @var MobileMoneyStatus
      */
     protected $currentResponse;
 
@@ -116,6 +116,7 @@ class MobileMoneyStatusCheckerResponse
 
         foreach ($this->responses['data'] as $transactionId => $response) {
             $this->setCurrentResponseData($response->getResponse());
+            $this->setCurrentAppendedData($transactionId);
 
             if ($isCustomCondition) {
                 $matchesCondition = $this->{'is'.ucfirst($condition)}();
@@ -332,7 +333,7 @@ class MobileMoneyStatusCheckerResponse
         return $this->failureValues;
     }
 
-    public function setCurrentResponseData($currentResponse = [])
+    public function setCurrentResponseData($currentResponse)
     {
         $this->originalCurrentResponse = $currentResponse;
 
@@ -354,6 +355,16 @@ class MobileMoneyStatusCheckerResponse
         }
 
         return $this->currentResponse;
+    }
+
+    public function setCurrentAppendedData($transactionId)
+    {
+        if (
+            $this->getCurrentResponse() instanceof MobileMoneyStatus &&
+            in_array($this->appended, $transactionId)
+        ) {
+            $this->currentResponse->setAppended($this->appended[$transactionId]);
+        }
     }
 
     public function getCurrentResponse($attribute = null, $default = null)
