@@ -13,6 +13,7 @@ class MobileMoneyStatusCheckerResponse
         'success',
         'pending',
         'failure',
+        'transactionNotFound',
         'always',
         'curlError',
     ];
@@ -57,31 +58,40 @@ class MobileMoneyStatusCheckerResponse
 
     protected $conditionToCheckForPending = 'code';
 
+    protected $conditionToCheckForTransactionNotFound = 'code';
+
     /**
-     * Codes of the request payload that determines that the transaction was successful.
+     * Codes of the request payload that determine that the transaction was successful.
      *
      * @var array
      */
     protected $successValues = ['000'];
 
     /**
-     * Codes of the request payload that determines that the transaction is pending.
+     * Codes of the request payload that determine that the transaction is pending.
      *
      * @var array
      */
     protected $pendingValues = ['111'];
 
     /**
-     * Codes of the request payload that determines that the transaction failed.
+     * Codes of the request payload that determine that the transaction is not found.
      *
      * @var array
      */
-    protected $failureValues = ['101', '102', '103', '104', '105', '114', '600', '999', 'default'];
+    protected $transactionNotFoundValues = ['999'];
+
+    /**
+     * Codes of the request payload that determine that the transaction failed.
+     *
+     * @var array
+     */
+    protected $failureValues = ['101', '102', '103', '104', '105', '114', '600', 'default'];
 
     protected $responses = [];
 
     /**
-     * @var Closure[]
+     * @var callable[]
      */
     protected $callbacks = [];
 
@@ -95,10 +105,10 @@ class MobileMoneyStatusCheckerResponse
     /**
      * Run the callback if conditions match the request parameters.
      *
-     * @param string|array   $condition String or associative array matching the request parameters.
-     *                                  If string, the parameter is either one of the custom conditions
-     *                                  specified or the conditionToCheckForSuccess.
-     * @param Closure|string $callback  Closure or name of the method in the callback handler class.
+     * @param string|array $condition String or associative array matching the request parameters.
+     *                                If string, the parameter is either one of the custom conditions
+     *                                specified or the conditionToCheckForSuccess.
+     * @param callable     $callback  Closure or name of the method in the callback handler class.
      *
      * @return $this
      */
@@ -167,11 +177,9 @@ class MobileMoneyStatusCheckerResponse
      *
      * The successful transaction is determined by the code of the request.
      *
-     * @param Closure|string $callback
-     *
      * @return $this
      */
-    public function onSuccess($callback)
+    public function onSuccess(callable $callback)
     {
         $this->on('success', $callback);
 
@@ -189,11 +197,9 @@ class MobileMoneyStatusCheckerResponse
     /**
      * Run callback if the transaction is pending.
      *
-     * @param Closure|string $callback
-     *
      * @return $this
      */
-    public function onPending($callback)
+    public function onPending(callable $callback)
     {
         $this->on('pending', $callback);
 
@@ -209,15 +215,33 @@ class MobileMoneyStatusCheckerResponse
     }
 
     /**
+     * Run callback if transaction not found.
+     *
+     * @return $this
+     */
+    public function onTransactionNotFound(callable $callback)
+    {
+        $this->on('transactionNotFound', $callback);
+
+        return $this;
+    }
+
+    public function isTransactionNotFound()
+    {
+        return in_array(
+            $this->getCurrentResponse($this->conditionToCheckForTransactionNotFound),
+            $this->transactionNotFoundValues
+        );
+    }
+
+    /**
      * Run callback if the transaction has failed.
      *
      * The failed request is determined by the code of the request.
      *
-     * @param Closure|string $callback
-     *
      * @return $this
      */
-    public function onFailure($callback)
+    public function onFailure(callable $callback)
     {
         $this->on('failure', $callback);
 
@@ -226,17 +250,15 @@ class MobileMoneyStatusCheckerResponse
 
     public function isFailure()
     {
-        return !$this->isSuccess() && !$this->isPending();
+        return !$this->isSuccess() && !$this->isPending() && !$this->isTransactionNotFound();
     }
 
     /**
      * Run callback whether the transaction is successful or not.
      *
-     * @param Closure|string $callback
-     *
      * @return $this
      */
-    public function always($callback)
+    public function always(callable $callback)
     {
         $this->on('always', $callback);
     }
@@ -261,8 +283,8 @@ class MobileMoneyStatusCheckerResponse
     /**
      * Run the callback if the condition is met.
      *
-     * @param bool|Closure   $condition
-     * @param Closure|string $callback
+     * @param bool|callable   $condition
+     * @param callable|string $callback
      *
      * @return void
      */
@@ -277,23 +299,23 @@ class MobileMoneyStatusCheckerResponse
         return $this;
     }
 
-    public function runClosure($closure, $args)
+    public function runCallable($closure, $args)
     {
         return call_user_func_array($closure, $args);
     }
 
     public function runCallback($callback, $response)
     {
-        if ($callback instanceof Closure) {
-            $this->runClosure($callback, [$response]);
+        if (is_callable($callback)) {
+            $this->runCallable($callback, [$response]);
 
             return $this;
         }
 
         if (is_array($callback)) {
             foreach ($callback as $actualCallback) {
-                if ($actualCallback instanceof Closure) {
-                    $this->runClosure($actualCallback, [$response]);
+                if (is_callable($actualCallback)) {
+                    $this->runCallable($actualCallback, [$response]);
                 }
             }
 
@@ -321,6 +343,16 @@ class MobileMoneyStatusCheckerResponse
     public function getPendingValues()
     {
         return $this->pendingValues;
+    }
+
+    /**
+     * Transaction not found codes.
+     *
+     * @return array
+     */
+    public function getTransactionNotFoundValues()
+    {
+        return $this->transactionNotFoundValues;
     }
 
     /**
