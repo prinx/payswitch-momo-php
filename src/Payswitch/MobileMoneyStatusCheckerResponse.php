@@ -392,8 +392,8 @@ class MobileMoneyStatusCheckerResponse
     public function setCurrentAppendedData($transactionId)
     {
         if (
-            $this->getCurrentResponse() instanceof MobileMoneyStatus &&
-            in_array($this->appended, $transactionId)
+            $this->currentResponse instanceof MobileMoneyStatus &&
+            array_key_exists($transactionId, $this->appended)
         ) {
             $this->currentResponse->setAppended($this->appended[$transactionId]);
         }
