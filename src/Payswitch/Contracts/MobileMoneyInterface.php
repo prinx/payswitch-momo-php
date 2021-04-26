@@ -18,7 +18,7 @@ interface MobileMoneyInterface
      * @param string|int|null  $voucherCode
      * @param array            $curlOptions Additional Curl options to pass to the request
      *
-     * @return MobileMoneyResponseInterface
+     * @return MobileMoneyStatusInterface
      */
     public function pay(
         $amount,
@@ -26,5 +26,5 @@ interface MobileMoneyInterface
         $network,
         $voucherCode = null,
         $curlOptions = []
-    ): MobileMoneyResponseInterface;
+    ): MobileMoneyStatusInterface;
 }

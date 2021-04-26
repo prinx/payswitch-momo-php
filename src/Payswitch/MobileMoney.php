@@ -3,7 +3,7 @@
 namespace Prinx\Payswitch;
 
 use Prinx\Payswitch\Contracts\MobileMoneyInterface;
-use Prinx\Payswitch\Contracts\MobileMoneyResponseInterface;
+use Prinx\Payswitch\Contracts\MobileMoneyStatusInterface;
 use function Prinx\Dotenv\env;
 
 class MobileMoney implements MobileMoneyInterface
@@ -59,7 +59,7 @@ class MobileMoney implements MobileMoneyInterface
      * @param string|int|null  $voucherCode
      * @param array            $curlOptions Additional Curl options to pass to the request
      *
-     * @return MobileMoneyResponseInterface
+     * @return MobileMoneyStatusInterface
      */
     public function pay(
         $amount,
@@ -67,7 +67,7 @@ class MobileMoney implements MobileMoneyInterface
         $network,
         $voucherCode = null,
         $curlOptions = []
-    ): MobileMoneyResponseInterface {
+    ): MobileMoneyStatusInterface {
         if (isset(self::$networks[$network])) {
             $network = self::$networks[$network];
             $data = $this->prepareData($msisdn, $network, $amount, $voucherCode);
@@ -83,7 +83,7 @@ class MobileMoney implements MobileMoneyInterface
             $err = 'Unsupported network "'.$network.'"';
         }
 
-        return new MobileMoneyResponse($response ?? null, $err, $data['transaction_id'] ?? null);
+        return new MobileMoneyStatus($response ?? null, $err, $data['transaction_id'] ?? null);
     }
 
     /**

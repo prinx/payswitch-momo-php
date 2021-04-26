@@ -2,12 +2,12 @@
 
 namespace Prinx\Payswitch;
 
-use Prinx\Payswitch\Contracts\MobileMoneyResponseInterface;
-use Prinx\Payswitch\Traits\GetResponseAttributes;
+use Prinx\Payswitch\Contracts\MobileMoneyStatusInterface;
+use Prinx\Payswitch\Traits\GetStatusAttributes;
 
-class MobileMoneyResponse implements MobileMoneyResponseInterface
+class MobileMoneyStatus implements MobileMoneyStatusInterface
 {
-    use GetResponseAttributes;
+    use GetStatusAttributes;
 
     protected $rawResponse = null;
     protected $response = null;
@@ -16,12 +16,14 @@ class MobileMoneyResponse implements MobileMoneyResponseInterface
     protected $isSuccessful = false;
     protected $isBeingProcessed = false;
     protected $status = 0;
+    protected $appended = null;
 
-    public function __construct($response, $error, $transactionId)
+    public function __construct($response, $error, $transactionId, $appended = null)
     {
         $this->rawResponse = $response;
         $this->response = $response;
         $this->transactionId = $transactionId;
+        $this->appended = $appended;
 
         if ($error) {
             $this->error = $error;
@@ -157,5 +159,10 @@ class MobileMoneyResponse implements MobileMoneyResponseInterface
     public function getRawResponse()
     {
         return $this->rawResponse;
+    }
+
+    public function getAppended()
+    {
+        return $this->appended;
     }
 }

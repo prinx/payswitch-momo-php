@@ -2,7 +2,7 @@
 
 namespace Prinx\Payswitch\Traits;
 
-trait GetResponseAttributes
+trait GetStatusAttributes
 {
     public function getCode()
     {

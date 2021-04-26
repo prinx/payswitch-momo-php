@@ -2,18 +2,19 @@
 
 namespace Tests\Unit;
 
-use Prinx\Payswitch\MobileMoneyResponse;
-use Prinx\Payswitch\MobileMoneyResponseCheckCallbackHandler;
+use Prinx\Payswitch\MobileMoneyStatus;
+use Prinx\Payswitch\MobileMoneyStatusCheckCallbackHandler;
+use Prinx\Payswitch\MobileMoneyStatusCheckerResponse;
 use Tests\TestCase;
 
-class MobileMoneyResponseCheckCallbackHandlerTest extends TestCase
+class MobileMoneyStatusCheckerResponseTest extends TestCase
 {
     public function testCallbackCalledWhenSuccess()
     {
         $responses = [
             'success' => true,
             'data' => [
-                new MobileMoneyResponse(json_encode([
+                new MobileMoneyStatus(json_encode([
                     'code' => '000',
                     'status' => 'approved',
                     'reason' => 'Transaction Successful',
@@ -33,7 +34,7 @@ class MobileMoneyResponseCheckCallbackHandlerTest extends TestCase
         $responses = [
             'success' => true,
             'data' => [
-                new MobileMoneyResponse(json_encode([
+                new MobileMoneyStatus(json_encode([
                     'code' => '000',
                     'status' => 'approved',
                     'reason' => 'Transaction Successful',
@@ -53,7 +54,7 @@ class MobileMoneyResponseCheckCallbackHandlerTest extends TestCase
         $responses = [
             'success' => true,
             'data' => [
-                new MobileMoneyResponse(json_encode([
+                new MobileMoneyStatus(json_encode([
                     'code' => '105',
                     'status' => '',
                     'reason' => 'Transaction',
@@ -70,13 +71,13 @@ class MobileMoneyResponseCheckCallbackHandlerTest extends TestCase
 
     public function testCallbackCalledOnFailureCodes()
     {
-        $failureCodes = (new MobileMoneyResponseCheckCallbackHandler([]))->getFailureValues();
+        $failureCodes = (new MobileMoneyStatusCheckerResponse([]))->getFailureValues();
 
         foreach ($failureCodes as  $code) {
             $responses = [
             'success' => true,
             'data' => [
-                new MobileMoneyResponse(json_encode([
+                new MobileMoneyStatus(json_encode([
                     'code' => $code,
                     'status' => '',
                     'reason' => 'Transaction',
@@ -97,7 +98,7 @@ class MobileMoneyResponseCheckCallbackHandlerTest extends TestCase
         $responses = [
             'success' => true,
             'data' => [
-                new MobileMoneyResponse(json_encode([
+                new MobileMoneyStatus(json_encode([
                     'code' => '000',
                     'status' => 'approved',
                     'reason' => 'Transaction Successful',
@@ -106,7 +107,7 @@ class MobileMoneyResponseCheckCallbackHandlerTest extends TestCase
                     'subscriber_number' => '************1999',
                     'amount' => 1,
                 ]), '', 0),
-                new MobileMoneyResponse(json_encode([
+                new MobileMoneyStatus(json_encode([
                     'code' => '114',
                     'status' => '',
                     'reason' => 'Transaction',
@@ -115,7 +116,7 @@ class MobileMoneyResponseCheckCallbackHandlerTest extends TestCase
                     'subscriber_number' => '************1999',
                     'amount' => 1,
                 ]), '', 1),
-                new MobileMoneyResponse(json_encode([
+                new MobileMoneyStatus(json_encode([
                     'code' => '104',
                     'status' => '',
                     'reason' => 'Transaction',
@@ -142,7 +143,10 @@ class MobileMoneyResponseCheckCallbackHandlerTest extends TestCase
 
     public function callbackCalledOn($condition, $responses, $isCustomCondition = false, $expectedCalls = 1)
     {
-        $callbackHandler = $this->getMockBuilder(MobileMoneyResponseCheckCallbackHandler::class)
+        /**
+         * @var \PHPUnit\Framework\MockObject\MockObject|MobileMoneyStatusCheckerResponse
+         */
+        $callbackHandler = $this->getMockBuilder(MobileMoneyStatusCheckCallbackHandler::class)
             ->setConstructorArgs([$responses])
             ->onlyMethods(['runClosure'])
             ->getMock();

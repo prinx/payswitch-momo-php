@@ -2,7 +2,7 @@
 
 namespace Prinx\Payswitch\Contracts;
 
-interface MobileMoneyResponseInterface
+interface MobileMoneyStatusInterface
 {
     /**
      * Has user successfully payed?
@@ -96,4 +96,11 @@ interface MobileMoneyResponseInterface
      * @return int|float
      */
     public function getAmount();
+
+    /**
+     * Data appended to the response by the developer (typically used in the callbacks).
+     *
+     * @return mixed
+     */
+    public function getAppended();
 }

@@ -7,7 +7,7 @@ use Prinx\Notify\Log;
 use Prinx\Payswitch\Exceptions\InvalidCurrentResponseKeyException;
 use Txtpay\Support\SlackLog;
 
-class MobileMoneyResponseCheckCallbackHandler
+class MobileMoneyStatusCheckerResponse
 {
     protected $customConditions = [
         'success',
@@ -367,6 +367,44 @@ class MobileMoneyResponseCheckCallbackHandler
     public function getResponses()
     {
         return $this->responses;
+    }
+
+    /**
+     * Append extra data to the responses.
+     *
+     * $toAppend must be in form:
+     *      [
+     *          '012345678' => 'data_to_append_for_this_transaction_id',
+     *          '112345678' => 'data_to_append_for_this_transaction_id',
+     *          '212345678' => 'data_to_append_for_this_transaction_id',
+     *      ]
+     *
+     * The indexes are the transaction ids.
+     *
+     * You can append extra data for only the transaction id that you need.
+     *
+     * @return $this
+     */
+    public function append(array $toAppend)
+    {
+        $this->appended = array_merge($this->appended, $toAppend);
+
+        return $this;
+    }
+
+    public function setAppended(array $toAppend)
+    {
+        $this->appended = $toAppend;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAppended()
+    {
+        return $this->appended;
     }
 
     public function getLogger()

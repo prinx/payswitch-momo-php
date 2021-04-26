@@ -4,7 +4,7 @@ namespace Prinx\Payswitch;
 
 use Exception;
 
-class MobileMoneyResponseCheck
+class MobileMoneyStatusChecker
 {
     const MOMO_RESPONSE_CHECK_ENDPOINT = 'https://[env].theteller.net/v1.1/users/transactions/[transaction_id]/status';
 
@@ -83,7 +83,7 @@ class MobileMoneyResponseCheck
             if (!$error) {
                 $response = curl_multi_getcontent($curlHandle);
                 $error = curl_error($curlHandle);
-                $responses['data'][$transactionId] = new MobileMoneyResponse(
+                $responses['data'][$transactionId] = new MobileMoneyStatus(
                     $response,
                     $error,
                     $transactionId
@@ -95,7 +95,7 @@ class MobileMoneyResponseCheck
 
         curl_multi_close($multiHandle);
 
-        return new MobileMoneyResponseCheckCallbackHandler($responses);
+        return new MobileMoneyStatusCheckerResponse($responses);
     }
 
     public function formatUrl($transactionId)
