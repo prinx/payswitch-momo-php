@@ -126,7 +126,7 @@ class MobileMoneyStatusCheckerResponse
 
         foreach ($this->responses['data'] as $transactionId => $response) {
             $this->setCurrentResponseData($response->getResponse());
-            $this->setCurrentAppendedData($transactionId);
+            $this->setCurrentAppendedData($transactionId, $response);
 
             if ($isCustomCondition) {
                 $matchesCondition = $this->{'is'.ucfirst($condition)}();
@@ -389,13 +389,10 @@ class MobileMoneyStatusCheckerResponse
         return $this->currentResponse;
     }
 
-    public function setCurrentAppendedData($transactionId)
+    public function setCurrentAppendedData($transactionId, $response)
     {
-        if (
-            $this->currentResponse instanceof MobileMoneyStatus &&
-            array_key_exists($transactionId, $this->appended)
-        ) {
-            $this->currentResponse->setAppended($this->appended[$transactionId]);
+        if (array_key_exists($transactionId, $this->appended)) {
+            $response->setAppended($this->appended[$transactionId]);
         }
     }
 
@@ -432,7 +429,7 @@ class MobileMoneyStatusCheckerResponse
      */
     public function append(array $toAppend)
     {
-        $this->appended = array_merge($this->appended, $toAppend);
+        $this->appended = array_replace($this->appended, $toAppend);
 
         return $this;
     }
