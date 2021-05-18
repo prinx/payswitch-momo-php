@@ -36,11 +36,11 @@ class MobileMoneyStatusChecker
         $multiHandle = curl_multi_init();
         $curlOptions = [
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => [
+            CURLOPT_MAXREDIRS      => 10,
+            CURLOPT_TIMEOUT        => 30,
+            CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST  => 'GET',
+            CURLOPT_HTTPHEADER     => [
                 'Cache-Control: no-cache',
                 'Content-Type: application/json',
                 'Merchant-Id: '.env('PAYSWITCH_MOMO_API_MERCHANT_ID'),
@@ -73,7 +73,7 @@ class MobileMoneyStatusChecker
         if ($error) {
             $responses = [
                 'success' => false,
-                'error' => $error,
+                'error'   => $error,
             ];
         } else {
             $responses = ['success' => true];

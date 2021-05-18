@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
+use function Prinx\Dotenv\env;
 use Prinx\Payswitch\MobileMoney;
 use Tests\TestCase;
-use function Prinx\Dotenv\env;
 
 class MobileMoneyTest extends TestCase
 {

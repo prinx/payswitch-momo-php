@@ -12,15 +12,15 @@ class MobileMoneyStatusCheckerResponseTest extends TestCase
     {
         $responses = [
             'success' => true,
-            'data' => [
+            'data'    => [
                 new MobileMoneyStatus(json_encode([
-                    'code' => '000',
-                    'status' => 'approved',
-                    'reason' => 'Transaction Successful',
-                    'transaction_id' => 0,
-                    'r_switch' => 'VIS',
+                    'code'              => '000',
+                    'status'            => 'approved',
+                    'reason'            => 'Transaction Successful',
+                    'transaction_id'    => 0,
+                    'r_switch'          => 'VIS',
                     'subscriber_number' => '************1999',
-                    'amount' => 1,
+                    'amount'            => 1,
                 ]), '', 0),
             ],
         ];
@@ -32,15 +32,15 @@ class MobileMoneyStatusCheckerResponseTest extends TestCase
     {
         $responses = [
             'success' => true,
-            'data' => [
+            'data'    => [
                 new MobileMoneyStatus(json_encode([
-                    'code' => '000',
-                    'status' => 'approved',
-                    'reason' => 'Transaction Successful',
-                    'transaction_id' => 0,
-                    'r_switch' => 'VIS',
+                    'code'              => '000',
+                    'status'            => 'approved',
+                    'reason'            => 'Transaction Successful',
+                    'transaction_id'    => 0,
+                    'r_switch'          => 'VIS',
                     'subscriber_number' => '************1999',
-                    'amount' => 1,
+                    'amount'            => 1,
                 ]), '', 0),
             ],
         ];
@@ -52,15 +52,15 @@ class MobileMoneyStatusCheckerResponseTest extends TestCase
     {
         $responses = [
             'success' => true,
-            'data' => [
+            'data'    => [
                 new MobileMoneyStatus(json_encode([
-                    'code' => '105',
-                    'status' => '',
-                    'reason' => 'Transaction',
-                    'transaction_id' => 0,
-                    'r_switch' => 'VIS',
+                    'code'              => '105',
+                    'status'            => '',
+                    'reason'            => 'Transaction',
+                    'transaction_id'    => 0,
+                    'r_switch'          => 'VIS',
                     'subscriber_number' => '************1999',
-                    'amount' => 1,
+                    'amount'            => 1,
                 ]), '', 0),
             ],
         ];
@@ -74,19 +74,19 @@ class MobileMoneyStatusCheckerResponseTest extends TestCase
 
         foreach ($failureCodes as  $code) {
             $responses = [
-            'success' => true,
-            'data' => [
-                new MobileMoneyStatus(json_encode([
-                    'code' => $code,
-                    'status' => '',
-                    'reason' => 'Transaction',
-                    'transaction_id' => 0,
-                    'r_switch' => 'VIS',
-                    'subscriber_number' => '************1999',
-                    'amount' => 1,
-                ]), '', 0),
-            ],
-        ];
+                'success' => true,
+                'data'    => [
+                    new MobileMoneyStatus(json_encode([
+                        'code'              => $code,
+                        'status'            => '',
+                        'reason'            => 'Transaction',
+                        'transaction_id'    => 0,
+                        'r_switch'          => 'VIS',
+                        'subscriber_number' => '************1999',
+                        'amount'            => 1,
+                    ]), '', 0),
+                ],
+            ];
 
             $this->callbackCalledOn($code, $responses);
         }
@@ -96,33 +96,33 @@ class MobileMoneyStatusCheckerResponseTest extends TestCase
     {
         $responses = [
             'success' => true,
-            'data' => [
+            'data'    => [
                 new MobileMoneyStatus(json_encode([
-                    'code' => '000',
-                    'status' => 'approved',
-                    'reason' => 'Transaction Successful',
-                    'transaction_id' => 0,
-                    'r_switch' => 'VIS',
+                    'code'              => '000',
+                    'status'            => 'approved',
+                    'reason'            => 'Transaction Successful',
+                    'transaction_id'    => 0,
+                    'r_switch'          => 'VIS',
                     'subscriber_number' => '************1999',
-                    'amount' => 1,
+                    'amount'            => 1,
                 ]), '', 0),
                 new MobileMoneyStatus(json_encode([
-                    'code' => '114',
-                    'status' => '',
-                    'reason' => 'Transaction',
-                    'transaction_id' => 1,
-                    'r_switch' => 'VIS',
+                    'code'              => '114',
+                    'status'            => '',
+                    'reason'            => 'Transaction',
+                    'transaction_id'    => 1,
+                    'r_switch'          => 'VIS',
                     'subscriber_number' => '************1999',
-                    'amount' => 1,
+                    'amount'            => 1,
                 ]), '', 1),
                 new MobileMoneyStatus(json_encode([
-                    'code' => '104',
-                    'status' => '',
-                    'reason' => 'Transaction',
-                    'transaction_id' => 2,
-                    'r_switch' => 'VIS',
+                    'code'              => '104',
+                    'status'            => '',
+                    'reason'            => 'Transaction',
+                    'transaction_id'    => 2,
+                    'r_switch'          => 'VIS',
                     'subscriber_number' => '************1999',
-                    'amount' => 1,
+                    'amount'            => 1,
                 ]), '', 2),
             ],
         ];
@@ -134,7 +134,7 @@ class MobileMoneyStatusCheckerResponseTest extends TestCase
     {
         $responses = [
             'success' => false,
-            'error' => 'Error',
+            'error'   => 'Error',
         ];
 
         $this->callbackCalledOn('onCurlError', $responses, true);

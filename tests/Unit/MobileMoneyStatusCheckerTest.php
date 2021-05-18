@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
+use function Prinx\Dotenv\addEnv;
+use function Prinx\Dotenv\env;
 use Prinx\Payswitch\MobileMoneyStatusChecker;
 use Prinx\Payswitch\MobileMoneyStatusCheckerResponse;
 use Tests\TestCase;
-use function Prinx\Dotenv\addEnv;
-use function Prinx\Dotenv\env;
 
 class MobileMoneyStatusCheckerTest extends TestCase
 {

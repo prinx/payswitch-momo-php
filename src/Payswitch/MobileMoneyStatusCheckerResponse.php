@@ -45,13 +45,13 @@ class MobileMoneyStatusCheckerResponse
     ];
 
     protected $customCurrentResponseNames = [
-        'code' => 'code',
-        'status' => 'status',
-        'reason' => 'details',
-        'transaction_id' => 'id',
-        'r_switch' => 'network',
+        'code'              => 'code',
+        'status'            => 'status',
+        'reason'            => 'details',
+        'transaction_id'    => 'id',
+        'r_switch'          => 'network',
         'subscriber_number' => 'phone',
-        'amount' => 'amount',
+        'amount'            => 'amount',
     ];
 
     protected $conditionToCheckForSuccess = 'code';

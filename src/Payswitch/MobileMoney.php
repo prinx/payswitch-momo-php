@@ -2,9 +2,9 @@
 
 namespace Prinx\Payswitch;
 
+use function Prinx\Dotenv\env;
 use Prinx\Payswitch\Contracts\MobileMoneyInterface;
 use Prinx\Payswitch\Contracts\MobileMoneyStatusInterface;
-use function Prinx\Dotenv\env;
 
 class MobileMoney implements MobileMoneyInterface
 {
@@ -35,14 +35,14 @@ class MobileMoney implements MobileMoneyInterface
      * @var array
      */
     public static $networks = [
-        'MTN' => self::MTN_ABBR,
-        'VODAFONE' => self::VODAFONE_ABBR,
-        'AIRTEL' => self::AIRTEL_ABBR,
-        'TIGO' => self::AIRTEL_ABBR,
+        'MTN'         => self::MTN_ABBR,
+        'VODAFONE'    => self::VODAFONE_ABBR,
+        'AIRTEL'      => self::AIRTEL_ABBR,
+        'TIGO'        => self::AIRTEL_ABBR,
         'AIRTEL-TIGO' => self::AIRTEL_ABBR,
         'TIGO-AIRTEL' => self::AIRTEL_ABBR,
-        'AIRTELTIGO' => self::AIRTEL_ABBR,
-        'TIGOAIRTEL' => self::AIRTEL_ABBR,
+        'AIRTELTIGO'  => self::AIRTEL_ABBR,
+        'TIGOAIRTEL'  => self::AIRTEL_ABBR,
     ];
 
     /**
@@ -98,13 +98,13 @@ class MobileMoney implements MobileMoneyInterface
     private function prepareData($msisdn, $network, $amount, $voucherCode)
     {
         $data = [
-            'r-switch' => $network,
+            'r-switch'          => $network,
             'subscriber_number' => trim($msisdn, '+'),
-            'transaction_id' => $this->transactionId(),
-            'amount' => $this->convertAmount($amount),
-            'processing_code' => $this->credentials('processing_code'),
-            'merchant_id' => $this->credentials('merchant_id'),
-            'desc' => $this->credentials('desc'),
+            'transaction_id'    => $this->transactionId(),
+            'amount'            => $this->convertAmount($amount),
+            'processing_code'   => $this->credentials('processing_code'),
+            'merchant_id'       => $this->credentials('merchant_id'),
+            'desc'              => $this->credentials('desc'),
         ];
 
         if ($network === self::VODAFONE_ABBR && $voucherCode) {
@@ -124,16 +124,16 @@ class MobileMoney implements MobileMoneyInterface
     private function curlOptions($defaultOptions)
     {
         return [
-            CURLOPT_URL => $this->credentials('endpoint'),
+            CURLOPT_URL            => $this->credentials('endpoint'),
             CURLOPT_RETURNTRANSFER => $defaultOptions['return-transfer'] ?? true,
-            CURLOPT_ENCODING => $defaultOptions['encoding'] ?? 'UTF-8',
-            CURLOPT_MAXREDIRS => $defaultOptions['maxredirs'] ?? 10,
+            CURLOPT_ENCODING       => $defaultOptions['encoding'] ?? 'UTF-8',
+            CURLOPT_MAXREDIRS      => $defaultOptions['maxredirs'] ?? 10,
             CURLOPT_CONNECTTIMEOUT => $defaultOptions['connect-timeout'] ?? 60,
-            CURLOPT_TIMEOUT => $defaultOptions['timeout'] ?? 120,
-            CURLOPT_HTTP_VERSION => $defaultOptions['version'] ?? CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => $defaultOptions['method'] ?? 'POST',
-            CURLOPT_POSTFIELDS => json_encode($defaultOptions['params'] ?? []),
-            CURLOPT_HTTPHEADER => $this->headers(),
+            CURLOPT_TIMEOUT        => $defaultOptions['timeout'] ?? 120,
+            CURLOPT_HTTP_VERSION   => $defaultOptions['version'] ?? CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST  => $defaultOptions['method'] ?? 'POST',
+            CURLOPT_POSTFIELDS     => json_encode($defaultOptions['params'] ?? []),
+            CURLOPT_HTTPHEADER     => $this->headers(),
         ];
     }
 
@@ -185,11 +185,11 @@ class MobileMoney implements MobileMoneyInterface
     public function credentials($name = '')
     {
         $data = [
-            'endpoint' => 'https://'.env('PAYSWITCH_MOMO_API_ENV').'.theteller.net/v1.1/transaction/process',
-            'token' => env('PAYSWITCH_MOMO_API_USER').':'.env('PAYSWITCH_MOMO_API_KEY'),
+            'endpoint'        => 'https://'.env('PAYSWITCH_MOMO_API_ENV').'.theteller.net/v1.1/transaction/process',
+            'token'           => env('PAYSWITCH_MOMO_API_USER').':'.env('PAYSWITCH_MOMO_API_KEY'),
             'processing_code' => env('PAYSWITCH_MOMO_API_PROCESSING_CODE'),
-            'desc' => env('PAYSWITCH_MOMO_API_DESCRIPTION'),
-            'merchant_id' => env('PAYSWITCH_MOMO_API_MERCHANT_ID'),
+            'desc'            => env('PAYSWITCH_MOMO_API_DESCRIPTION'),
+            'merchant_id'     => env('PAYSWITCH_MOMO_API_MERCHANT_ID'),
         ];
 
         return $name ? $data[$name] : $data;

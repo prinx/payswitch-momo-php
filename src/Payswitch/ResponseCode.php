@@ -24,7 +24,7 @@ class ResponseCode
     const INVALID_VOUCHER_CODE = '114';
 
     /**
-     * Probably the developer did not perform the transaction or used a payswitch account different 
+     * Probably the developer did not perform the transaction or used a payswitch account different
      * from the one they are using to check the status.
      */
     const TRANSACTION_NOT_FOUND = '999';

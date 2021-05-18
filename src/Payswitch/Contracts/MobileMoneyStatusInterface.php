@@ -7,14 +7,14 @@ interface MobileMoneyStatusInterface
     /**
      * Has user successfully payed?
      *
-     * @return boolean
+     * @return bool
      */
     public function isSuccessful(): bool;
 
     /**
      * Is request being processed or a cURL error happened or a package-related error happened?
      *
-     * @return boolean
+     * @return bool
      */
     public function isBeingProcessed(): bool;
 
