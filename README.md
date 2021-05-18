@@ -1,5 +1,11 @@
 # PAYSWITCH MOBILE MONEY PHP SDK
 
+<p align="center">
+<a href="https://travis-ci.com/prinx/payswitch-momo-php"><img src="https://travis-ci.com/prinx/payswitch-momo-php.svg?branch=main" alt="Build Status"></a>
+<a href="https://packagist.org/packages/prinx/payswitch-momo"><img src="https://poser.pugx.org/prinx/payswitch-momo/v/stable.svg" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/prinx/payswitch-momo"><img src="https://poser.pugx.org/prinx/payswitch-momo/license.svg" alt="License"></a>
+<a href="https://github.styleci.io/repos/359152941?branch=main"><img src="https://github.styleci.io/repos/359152941/shield?style=flat&branch=main" alt="StyleCI"></a>
+
 ## Work In Progress
 
 ## Installation
