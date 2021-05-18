@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use Prinx\Payswitch\MobileMoneyStatus;
-use Prinx\Payswitch\MobileMoneyStatusCheckCallbackHandler;
 use Prinx\Payswitch\MobileMoneyStatusCheckerResponse;
 use Tests\TestCase;
 
@@ -128,7 +127,7 @@ class MobileMoneyStatusCheckerResponseTest extends TestCase
             ],
         ];
 
-        $this->callbackCalledOn('onSuccess', $responses, true, count($responses['data']));
+        $this->callbackCalledOn('always', $responses, true, count($responses['data']));
     }
 
     public function testCallbackCalledWhenCurlError()
@@ -146,13 +145,13 @@ class MobileMoneyStatusCheckerResponseTest extends TestCase
         /**
          * @var \PHPUnit\Framework\MockObject\MockObject|MobileMoneyStatusCheckerResponse
          */
-        $callbackHandler = $this->getMockBuilder(MobileMoneyStatusCheckCallbackHandler::class)
+        $callbackHandler = $this->getMockBuilder(MobileMoneyStatusCheckerResponse::class)
             ->setConstructorArgs([$responses])
-            ->onlyMethods(['runClosure'])
+            ->onlyMethods(['runCallable'])
             ->getMock();
 
         $callbackHandler->expects($this->exactly($expectedCalls))
-            ->method('runClosure');
+            ->method('runCallable');
 
         if ($isCustomCondition) {
             $callbackHandler->{$condition}(function () {});
